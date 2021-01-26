@@ -34,7 +34,7 @@ namespace Matrix.Client
         /// </summary>
         public MatrixAPI Api { get; }
         
-        public Client.Keys Keys { get; }
+        public Keys Keys { get; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Matrix.Client.MatrixClient"/> class.
@@ -46,7 +46,7 @@ namespace Matrix.Client
         {
             log.LogDebug($"Created new MatrixClient instance for {URL}");
             Api = new MatrixAPI (URL);
-            Keys = new Client.Keys(Api);
+            Keys = new Keys(Api);
             try{
                 Api.ClientVersions ();
                 Api.SyncJoinEvent += MatrixClient_OnEvent;
@@ -129,6 +129,7 @@ namespace Matrix.Client
         /// </summary>
         /// <param name="username">Username</param>
         /// <param name="password">Password</param>
+        /// <param name="device_id">Device ID</param>
         public MatrixLoginResponse LoginWithPassword(string username, string password, string device_id = null){
             var result = Api.ClientLogin (new MatrixLoginPassword (username, password, device_id));
             Api.SetLogin(result);

@@ -93,7 +93,7 @@ namespace Matrix
 				}
 				return content;
 			}
-			catch (Exception ex)
+			catch (Exception)
 			{
 				throw new Exception($"Failed to get content for {type}");
 			}
@@ -112,10 +112,9 @@ namespace Matrix
 				MatrixEvent ev = new MatrixEvent();
 			
 				serializer.Populate (jObject.CreateReader (), ev);
-				JToken redact;
 				if (jObject ["content"].HasValues) {
 					ev.content = GetContent (jObject ["content"] as JObject, serializer, ev.type);
-				} else if(((JObject)jObject["unsigned"]).TryGetValue("redacted_because",out redact)){
+				} else if(((JObject)jObject["unsigned"]).TryGetValue("redacted_because",out _)){
 					//TODO: Parse Redacted
 				}
 				return ev;

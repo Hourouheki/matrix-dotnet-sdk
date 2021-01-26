@@ -23,7 +23,7 @@ namespace Matrix
 		public override void WriteJson (JsonWriter writer, object value, JsonSerializer serializer)
 		{
 			Type t = value.GetType ();
-			string name = Enum.GetName (t, value).ToLower ();
+			string name = Enum.GetName (t, value)?.ToLower ();
 			JToken.FromObject (name).WriteTo (writer);
 		}
 

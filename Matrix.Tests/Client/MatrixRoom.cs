@@ -1,9 +1,7 @@
-using System;
 using NUnit.Framework;
-using Matrix;
 using Matrix.Client;
 using Matrix.Structures;
-using Moq;
+
 namespace Matrix.Tests.Client
 {
     [TestFixture]
@@ -61,7 +59,7 @@ namespace Matrix.Tests.Client
             };
             room.FeedEvent(Utils.MockEvent(ev));
             Assert.That(room.Aliases, Is.EquivalentTo(aliases), "Aliases are correct.");
-            aliases = new string[] {
+            aliases = new[] {
                 "#wok:resturant",
                 "#fryingpan:resturant"
             };
@@ -95,7 +93,7 @@ namespace Matrix.Tests.Client
         [Test]
         public void FeedEventRoomMemberTest() {
             var mock = Utils.MockApi();
-            MatrixRoom room = new MatrixRoom((MatrixAPI)mock.Object, "!abc:localhost");
+            MatrixRoom room = new MatrixRoom(mock.Object, "!abc:localhost");
             var ev = new MatrixMRoomMember() {
                 membership = EMatrixRoomMembership.Join
             };
@@ -107,7 +105,7 @@ namespace Matrix.Tests.Client
         [Test]
         public void FeedEventRoomMemberNoFireEventsTest() {
             var mock = Utils.MockApi();
-            MatrixRoom room = new MatrixRoom((MatrixAPI)mock.Object, "!abc:localhost");
+            MatrixRoom room = new MatrixRoom(mock.Object, "!abc:localhost");
             var ev = new MatrixMRoomMember() {
                 membership = EMatrixRoomMembership.Join
             };
@@ -123,7 +121,7 @@ namespace Matrix.Tests.Client
         [Test]
         public void FeedEventRoomMemberFireEventsTest() {
             var mock = Utils.MockApi();
-            MatrixRoom room = new MatrixRoom((MatrixAPI)mock.Object, "!abc:localhost");
+            MatrixRoom room = new MatrixRoom(mock.Object, "!abc:localhost");
             bool[] didFire = new bool[5];
             int fireCount = 0;
             room.OnUserJoined += (n, a) => didFire[0] = true;

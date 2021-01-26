@@ -13,7 +13,7 @@ namespace Matrix
             if (!error.IsOk) {
                 throw new MatrixException (error.ToString());
             }
-            return (result as JObject)?.GetValue("content_uri").ToObject<string>();
+            return (result as JObject)?.GetValue("content_uri")?.ToObject<string>();
         }
     }
 }

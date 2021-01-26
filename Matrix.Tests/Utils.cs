@@ -1,7 +1,6 @@
-using System;
 using Moq;
 using Matrix.Structures;
-using Matrix;
+
 namespace Matrix.Tests
 {
     public class Utils

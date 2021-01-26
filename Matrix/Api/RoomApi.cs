@@ -75,31 +75,24 @@ namespace Matrix
 			// XXX: Mutex was removed because it's not task safe, need another mechanism.
 			while (true)
 			{
-				try
+				var res = await mbackend.PutAsync(
+					$"/_matrix/client/r0/rooms/{roomid}/send/{type}/{txnId}", true, msgData
+				);
+				if (res.error.IsOk)
 				{
-					var res = await mbackend.PutAsync(
-						$"/_matrix/client/r0/rooms/{roomid}/send/{type}/{txnId}", true, msgData
-					);
-					if (res.error.IsOk)
-					{
-						//eventSendMutex.ReleaseMutex();
-						return res.result["event_id"].ToObject<string>();
-					}
-
-					if (res.error.MatrixErrorCode == MatrixErrorCode.M_LIMIT_EXCEEDED)
-					{
-						int backoff = res.error.RetryAfter != -1 ? res.error.RetryAfter : 1000;
-						log.LogWarning($"Sending m{txnId} failed. Will retry in {backoff}ms");
-						await Task.Delay(backoff);
-					}
-					else
-					{
-						throw new MatrixException (res.error.ToString());//TODO: Need a better exception
-					}
+					//eventSendMutex.ReleaseMutex();
+					return res.result["event_id"].ToObject<string>();
 				}
-				catch (Exception)
+
+				if (res.error.MatrixErrorCode == MatrixErrorCode.M_LIMIT_EXCEEDED)
 				{
-					throw;
+					int backoff = res.error.RetryAfter != -1 ? res.error.RetryAfter : 1000;
+					log.LogWarning($"Sending m{txnId} failed. Will retry in {backoff}ms");
+					await Task.Delay(backoff);
+				}
+				else
+				{
+					throw new MatrixException (res.error.ToString());//TODO: Need a better exception
 				}
 			}
 		}
@@ -164,7 +157,7 @@ namespace Matrix
 		    ThrowIfNotSupported();
 		    MatrixRequestError error = mbackend.Post(String.Format("/_matrix/client/r0/join/{0}",Uri.EscapeDataString(roomid)),true,null,out var result);
 		    if (error.IsOk) {
-			    roomid = result ["room_id"].ToObject<string> ();
+			    roomid = result ["room_id"]?.ToObject<string> ();
 			    return roomid;
 		    }
 		    return null;
@@ -180,7 +173,7 @@ namespace Matrix
 		    }
 		    MatrixRequestError error = mbackend.Post ("/_matrix/client/r0/createRoom", true, req, out var result);
 		    if (error.IsOk) {
-			    string roomid = result ["room_id"].ToObject<string> ();
+			    string roomid = result ["room_id"]?.ToObject<string> ();
 			    return roomid;
 		    }
 

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
 using Matrix.Client;
 using Matrix.Structures;
 

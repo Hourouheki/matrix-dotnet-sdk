@@ -14,7 +14,8 @@ namespace Matrix.Structures
 
 		public void ParseJObject(JObject obj){
 			receipts = new Dictionary<string, MatrixReceipts> ();
-			foreach(JProperty prop in obj.Children()){
+			foreach(var jToken in obj.Children()){
+				var prop = (JProperty) jToken;
 				MatrixReceipts reciepts = new MatrixReceipts ();
 				reciepts.ParseJObject((JObject)prop.Value);
 				receipts.Add (prop.Name, reciepts);
@@ -27,7 +28,8 @@ namespace Matrix.Structures
 
 		public void ParseJObject(JObject obj){
 			m_read = new Dictionary<string, MatrixReceipt> ();
-			foreach(JProperty prop in obj.GetValue("m.read").Children()){
+			foreach(var jToken in obj.GetValue("m.read").Children()){
+				var prop = (JProperty) jToken;
 				MatrixReceipt reciept = new MatrixReceipt ();
 				reciept.ts = ((JObject)prop.Value)["ts"].ToObject<Int64> ();
 				m_read.Add(prop.Name,reciept);

@@ -176,9 +176,6 @@ namespace Matrix.Backends
 					return new Tuple<JToken, HttpStatusCode>(null, httpResult.StatusCode);
 				}
 			}
-			catch(WebException e){
-				throw e;
-			}
 			catch(AggregateException e){
 				throw new MatrixException (e.InnerException.Message,e.InnerException);
 			}
