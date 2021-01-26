@@ -2,8 +2,8 @@ language: csharp
 solution: Matrix.sln
 os: linux
 mono: none
-dist: xenial
-dotnet: 2.2
+dist: focal
+dotnet: 5.0
 install:
   - dotnet restore
 script:
