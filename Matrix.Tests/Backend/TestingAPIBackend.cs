@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
@@ -10,6 +9,11 @@ namespace Matrix.Backends
             result = null;
             return null;
         }
+
+		public Task<MatrixAPIResult> GetAsync(string apiPath, bool authenticate)
+		{
+			return null;
+		}
 
 		public MatrixRequestError Post (string apiPath, bool authenticate, JToken request, out JToken result) {
             result = null;
